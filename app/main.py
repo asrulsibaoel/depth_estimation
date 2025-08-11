@@ -12,7 +12,7 @@ async def predict_distance(
     file: UploadFile = File(...),
     camera_pov: float = Form(...),
     height: float = Form(...),
-    obj_class: float = Form(...),
+    obj_class: str = Form(...),
     service: DistanceService = Depends(get_distance_service)
 ):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:

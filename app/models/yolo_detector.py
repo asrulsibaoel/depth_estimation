@@ -8,7 +8,7 @@ class YOLODetector:
         self.model = YOLO(str(model_path))
         self.model.to(device)
 
-    def detect_persons(self, image_bgr: np.ndarray, obj_class: str = "person"):
+    def detect(self, image_bgr: np.ndarray, obj_class: str = "person"):
         results = self.model(image_bgr)
         target_boxes = []
         for res in results:
