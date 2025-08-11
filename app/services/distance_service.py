@@ -1,9 +1,6 @@
-import cv2
-from typing import Tuple
-
-
-# app/services/distance_service.py
 from typing import List, Dict
+
+import cv2
 import numpy as np
 import math
 
@@ -21,10 +18,11 @@ class DistanceService:
         self,
         image_path: str,
         camera_pov: float,
-        average_height: float = 1.7
+        average_height: float = 1.7,
+        obj_class: str = "person"
     ) -> List[Dict]:
         image = cv2.imread(image_path)
-        detections = self.detector.detect_persons(image)
+        detections = self.detector.detect(image, obj_class=obj_class)
         depth_map = self.depth_model.infer_depth(image_path)
         img_width = image.shape[1]
 

@@ -1,3 +1,4 @@
+import numpy as np
 from ultralytics import YOLO
 from pathlib import Path
 
@@ -7,15 +8,15 @@ class YOLODetector:
         self.model = YOLO(str(model_path))
         self.model.to(device)
 
-    def detect_persons(self, image_bgr):
+    def detect_persons(self, image_bgr: np.ndarray, obj_class: str = "person"):
         results = self.model(image_bgr)
-        person_boxes = []
+        target_boxes = []
         for res in results:
             boxes = res.boxes.xyxy.cpu().numpy()
             classes = res.boxes.cls.cpu().numpy()
             for box, cls in zip(boxes, classes):
                 label = res.names[int(cls)]
-                if label == "truck" or label == "car":
+                if label == obj_class:
                     x1, y1, x2, y2 = map(int, box[:4])
-                    person_boxes.append((x1, y1, x2, y2))
-        return person_boxes
+                    target_boxes.append((x1, y1, x2, y2))
+        return target_boxes

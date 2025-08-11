@@ -90,7 +90,8 @@ with open(IMAGE_PATH, "rb") as f:
     files = {"file": (IMAGE_PATH, f, "image/jpeg")}
     data = {
         "camera_pov": 80,   # Camera field of view in degrees
-        "height": 5.05      # Average object height in meters (e.g. human height)
+        "height": 5.05,      # Average object height in meters (e.g. human height)
+        "obj_class": "truck"
     }
     response = requests.post(API_URL, files=files, data=data)
 
