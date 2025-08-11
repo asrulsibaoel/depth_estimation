@@ -56,13 +56,13 @@ http://localhost:8000
 
 ## API Endpoints
 
-- `POST /detect`  
+- `POST /predict`  
   Accepts an image file and returns detected objects along with estimated distances.
 
 ### Example Request (using `curl`):
 
 ```bash
-curl -X POST "http://localhost:8000/detect" -F "file=@path_to_your_image.jpg"
+curl -X POST "http://localhost:8000/predict" -F "file=@path_to_your_image.jpg"
 ```
 
 ### Example Response:
@@ -85,6 +85,7 @@ curl -X POST "http://localhost:8000/detect" -F "file=@path_to_your_image.jpg"
 
 - `app/` — FastAPI application source code  
 - `models/` — YOLO and MiDAS model files and utilities  
+- `notebooks/` — Place where you want to research, develop the functionality and testing the inference api.  
 - `run.sh` — Shell script to launch the FastAPI server  
 - `requirements.txt` — Python dependencies  
 
