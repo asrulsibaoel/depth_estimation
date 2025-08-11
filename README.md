@@ -65,14 +65,12 @@ http://localhost:8000
 
 To estimate distance correctly, the system uses the camera's focal length. You can calculate the focal length (in pixels) from the camera's field of view (FOV) angle and the image width:
 
-\[
-f = \frac{w}{2 \times \tan\left(\frac{\theta}{2}\right)}
-\]
+f = w / (2 * tan(θ / 2))  
 
 where:  
-- \( f \) = focal length in pixels  
-- \( w \) = image width in pixels  
-- \( \theta \) = camera horizontal field of view angle (in radians)
+- f = focal length in pixels  
+- w = image width in pixels  
+- θ = horizontal field of view angle in radians  
 
 This formula is used internally based on the `camera_pov` parameter you provide (in degrees).
 
