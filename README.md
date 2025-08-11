@@ -20,7 +20,7 @@ This project bundles a YOLO-based object detection model with MiDAS depth estima
 
    ```bash
    git clone https://github.com/asrulsibaoel/depth_estimation.git
-   cd your-repo-name
+   cd depth_estimation
    ```
 
 2. Create a Python virtual environment (optional but recommended):
@@ -57,25 +57,56 @@ http://localhost:8000
 ## API Endpoints
 
 - `POST /predict`  
-  Accepts an image file and returns detected objects along with estimated distances.
+  Accepts an image file along with camera parameters and returns detected objects with estimated distances.
 
-### Example Request (using `curl`):
+---
 
-```bash
-curl -X POST "http://localhost:8000/predict" -F "file=@path_to_your_image.jpg"
+## Camera Focal Length Calculation
+
+To estimate distance correctly, the system uses the camera's focal length. You can calculate the focal length (in pixels) from the camera's field of view (FOV) angle and the image width:
+
+\[
+f = \frac{w}{2 \times \tan\left(\frac{\theta}{2}\right)}
+\]
+
+where:  
+- \( f \) = focal length in pixels  
+- \( w \) = image width in pixels  
+- \( \theta \) = camera horizontal field of view angle (in radians)
+
+This formula is used internally based on the `camera_pov` parameter you provide (in degrees).
+
+---
+
+## Example Request
+
+Here’s an example Python request using the `requests` library to send an image with camera parameters:
+
+```python
+import requests
+
+API_URL = "http://localhost:8000/predict"
+IMAGE_PATH = "path/to/your/image.jpg"
+
+with open(IMAGE_PATH, "rb") as f:
+    files = {"file": (IMAGE_PATH, f, "image/jpeg")}
+    data = {
+        "camera_pov": 80,   # Camera field of view in degrees
+        "height": 5.05      # Average object height in meters (e.g. human height)
+    }
+    response = requests.post(API_URL, files=files, data=data)
+
+print(response.json())
 ```
 
-### Example Response:
+---
+
+## Example Response
 
 ```json
 [
-  {
-    "bbox": [x_min, y_min, x_max, y_max],
-    "label": "person",
-    "confidence": 0.98,
-    "distance_m": 3.45
-  },
-  ...
+  {'bbox': [125, 189, 247, 272], 'distance_m': 17.499951771},
+  {'bbox': [125, 211, 241, 272], 'distance_m': 23.552397515588748}
 ]
 ```
 
@@ -85,7 +116,6 @@ curl -X POST "http://localhost:8000/predict" -F "file=@path_to_your_image.jpg"
 
 - `app/` — FastAPI application source code  
 - `models/` — YOLO and MiDAS model files and utilities  
-- `notebooks/` — Place where you want to research, develop the functionality and testing the inference api.  
 - `run.sh` — Shell script to launch the FastAPI server  
 - `requirements.txt` — Python dependencies  
 
