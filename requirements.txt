@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+ultralytics
+depth_pro @ git+https://github.com/apple/ml-depth-pro.git
+opencv-python
+torch
+numpy
+pydantic
+uvicorn[standard]
+python-multipart
+pydantic-settings
